@@ -1,8 +1,15 @@
 from flask import Flask, render_template, request, jsonify
 import openai
+import os
+from dotenv import load_dotenv
 
-app = Flask(__name__)import openai
-openai.api_key = "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"
+# Chargement de la clé depuis le fichier .env
+load_dotenv()
+
+app = Flask(__name__)
+
+# Configuration de la clé API OpenAI via la variable d'environnement
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 @app.route('/')
 def index():
@@ -16,7 +23,7 @@ def chat():
         return jsonify({"reply": "Erreur: Clé API introuvable dans le fichier .env"})
 
     try:
-        # Version OpenAI 0.28
+        # Version OpenAI 0.28 (gpt-3.5-turbo)
         response = openai.ChatCompletion.create(
             model="gpt-3.5-turbo",
             messages=[
