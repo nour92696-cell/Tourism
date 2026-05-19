@@ -27,28 +27,74 @@
             <button onclick="sendMessage()">Envoyer</button>
         </div>
     </div>
+<script>
+    function sendMessage(){
 
-    <script>
-        function sendMessage() {
-            const input = document.getElementById("userInput");
-            const text = input.value;
-            if (!text) return;
+    const input = document.getElementById("userInput");
+    const text = input.value.trim();
 
-            const chatbox = document.getElementById("chatbox");
-            chatbox.innerHTML += `<div class="msg user">${text}</div>`;
-            input.value = "";
+    if(text === ""){
+        return;
+    }
 
-            fetch('/chat', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: text })
-            })
-            .then(res => res.json())
-            .then(data => {
-                chatbox.innerHTML += `<div class="msg bot">${data.reply}</div>`;
-                chatbox.scrollTop = chatbox.scrollHeight;
-            });
-        }
-    </script>
+    const chatbox = document.getElementById("chatbox");
+
+   
+    chatbox.innerHTML += `
+        <div class="msg user">${text}</div>
+    `;
+    let msg = text.toLowerCase();
+    let reply = "";
+    if(
+        msg.includes("salut") ||
+        msg.includes("bonjour") ||
+        msg.includes("hello")
+    ){
+        reply = "Salut 👋 Comment puis-je vous aider à découvrir la Tunisie 🇹🇳 ?";
+    }
+    else if(
+        msg.includes("merci") ||
+        msg.includes("thanks")
+    ){
+        reply = "Avec plaisir 😊 Bon voyage en Tunisie 🇹🇳";
+    }
+    else if(msg.includes("tunis")){
+        reply = "Tunis est la capitale de la Tunisie 🇹🇳. Vous pouvez visiter la médina et Sidi Bou Saïd.";
+    }
+    else if(msg.includes("sousse")){
+        reply = "Sousse possède de magnifiques plages et une médina historique 🌊";
+    }
+    else if(msg.includes("djerba")){
+        reply = "Djerba est une île touristique en tunisie célèbre pour ses hôtels et ses plages 🏝️";
+    }
+    else if(msg.includes("hotel")){
+        reply = "Vous trouverez plusieurs hôtels à Hammamet, Sousse et Djerba 🏨";
+    }
+    else if(msg.includes("plage")){
+        reply = "Les plus belles plages sont à Hammamet, Mahdia et Djerba 🌴";
+    }
+    else if(msg.includes("restaurant")){
+        reply = "La Tunisie possède plusieurs restaurants traditionnels proposant couscous et brik 🍽️";
+    }
+    else{
+        reply = "Désolé 😅 Je suis spécialisé dans le tourisme en Tunisie.";
+    }
+    setTimeout(() => {
+        chatbox.innerHTML += `
+            <div class="msg bot">${reply}</div>
+        `;
+        chatbox.scrollTop = chatbox.scrollHeight;
+    }, 500);
+    input.value = "";
+}
+document.getElementById("userInput")
+.addEventListener("keypress", function(event){
+
+    if(event.key === "Enter"){
+        sendMessage();
+    }
+});
+</script>
 </body>
 </html>
+
